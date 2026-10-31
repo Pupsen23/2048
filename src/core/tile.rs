@@ -1,8 +1,8 @@
+pub mod error;
 pub mod rules;
-pub mod tile_error;
 pub mod validation;
 
-use tile_error::TileError;
+pub use error::Error as TileError;
 use validation::*;
 
 #[derive(Debug, Clone, Copy, PartialEq)]

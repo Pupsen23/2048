@@ -1,33 +1,26 @@
-pub mod in_range_min_max_error;
-pub mod number_validation;
-pub mod power_of_base_error;
+pub mod in_range_validation;
+pub mod power_of_validation;
 
 use super::rules::*;
-use in_range_min_max_error::InRangeMinMaxError;
-use number_validation::{validate_in_range_include, validate_power_of_u32};
-use power_of_base_error::PowerOfBaseError;
+use in_range_validation::*;
+use power_of_validation::*;
 
-pub fn validate_power_of_base(value: Option<u32>) -> Result<Option<bool>, PowerOfBaseError> {
-    let power_base: u32 = POWER_BASE.ok_or(PowerOfBaseError::InvalidRule)?;
-
+pub fn validate_power_of_base(value: Option<u32>) -> Result<Option<bool>, PowerOfError> {
     let value: u32 = match value {
         None => return Ok(None),
         Some(some) => some,
     };
 
-    Ok(Some(validate_power_of_u32(value, power_base)?))
+    Ok(Some(validate_power_of_u32(value, POWER_BASE)?))
 }
 
-pub fn validate_in_range_min_max(value: Option<u32>) -> Result<Option<bool>, InRangeMinMaxError> {
-    let min_value: u32 = MIN_VALUE.ok_or(InRangeMinMaxError::InvalidRule)?;
-    let max_value: u32 = MAX_VALUE.ok_or(InRangeMinMaxError::InvalidRule)?;
-
+pub fn validate_in_range_min_max(value: Option<u32>) -> Result<Option<bool>, InRangeError> {
     let value: u32 = match value {
         None => return Ok(None),
         Some(some) => some,
     };
 
     Ok(Some(validate_in_range_include(
-        value, min_value, max_value,
+        value, MIN_VALUE, MAX_VALUE,
     )?))
 }
