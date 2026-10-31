@@ -18,21 +18,21 @@ pub struct Moves {
 impl Moves {
     pub const DEFAULT_LIMIT: u32 = 5;
     pub const DEFAULT_COUNT: u32 = 0;
-    
+
     pub fn limit(&self) -> u32 {
         self.limit
     }
-    
+
     pub fn count(&self) -> u32 {
         self.count
     }
-    
+
     pub fn set_count(&mut self, count: u32) -> Result<(), MovesError> {
         is_valid_count(count, self.limit).ok_or(MovesError::InvalidCount(count))?;
         self.count = count;
         Ok(())
     }
-    
+
     pub fn new() -> Self {
         Self {
             limit: Self::DEFAULT_LIMIT,
