@@ -17,11 +17,11 @@ impl Grid {
         self.size
     }
 
-    pub fn get_tile_at(&self, x: usize, y: usize) -> &Tile {
+    pub fn get_tile_at(&self, x: usize, y: usize) -> &Tile { // проверку индекса забыл, тупица
         &self.tiles[y * self.size.x + x]
     }
 
-    pub fn get_tile_at_mut(&mut self, x: usize, y: usize) -> &mut Tile {
+    pub fn get_tile_at_mut(&mut self, x: usize, y: usize) -> &mut Tile { // и здесь тоже
         &mut self.tiles[y * self.size.x + x]
     }
 
