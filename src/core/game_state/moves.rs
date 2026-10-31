@@ -1,13 +1,9 @@
+pub mod error;
 pub mod rules;
 pub mod validation;
 
+pub use error::Error as MovesError;
 use validation::*;
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum MovesError {
-    InvalidLimit(u32),
-    InvalidCount(u32),
-}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Moves {
@@ -28,7 +24,7 @@ impl Moves {
     }
 
     pub fn set_count(&mut self, count: u32) -> Result<(), MovesError> {
-        is_valid_count(count, self.limit).ok_or(MovesError::InvalidCount(count))?;
+        validate_count(count, self.limit)?;
         self.count = count;
         Ok(())
     }
@@ -41,8 +37,8 @@ impl Moves {
     }
 
     pub fn with(count: u32, limit: u32) -> Result<Self, MovesError> {
-        is_valid_limit(limit).ok_or(MovesError::InvalidLimit(limit))?;
-        is_valid_count(count, limit).ok_or(MovesError::InvalidCount(count))?;
+        validate_limit(limit)?;
+        validate_count(count, limit)?;
         Ok(Self { limit, count })
     }
 }

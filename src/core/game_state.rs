@@ -1,17 +1,13 @@
+pub mod error;
 pub mod game_status;
 pub mod moves;
 pub mod rules;
 pub mod validation;
 
+pub use error::Error as GameStateError;
 use game_status::GameStatus;
 use moves::Moves;
 use validation::*;
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum GameStateError {
-    StatusIsNotChangeable(GameStatus),
-    MovesIsNotChangeable(Moves),
-}
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameState {
@@ -24,8 +20,8 @@ impl GameState {
         self.status
     }
 
-    pub fn moves(&self) -> &Moves {
-        &self.moves
+    pub fn moves(&self) -> Moves {
+        self.moves
     }
 
     pub fn status_mut(&mut self) -> Result<&mut GameStatus, GameStateError> {
@@ -50,9 +46,8 @@ impl GameState {
     }
 
     fn ensure_changeability(&self) -> Result<(), GameStateError> {
-        is_changeable_status(self.status)
-            .ok_or(GameStateError::StatusIsNotChangeable(self.status))?;
-        is_changeable_moves(&self.moves).ok_or(GameStateError::MovesIsNotChangeable(self.moves))?;
+        validate_changeability_status(self.status)?;
+        validate_changeability_moves(self.moves)?;
         Ok(())
     }
 }
