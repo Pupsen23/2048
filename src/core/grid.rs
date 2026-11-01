@@ -1,15 +1,11 @@
+pub mod error;
 pub mod size;
 pub mod validation;
 
 use super::Tile;
+use error::Error as GridError;
 use size::Size;
 use validation::*;
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum GridError {
-    InvalidX(usize),
-    InvalidY(usize),
-}
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Grid {
@@ -18,13 +14,13 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn size(&self) -> &Size {
-        &self.size
+    pub fn size(&self) -> Size {
+        self.size
     }
 
-    pub fn get_tile_at(&self, x: usize, y: usize) -> Result<&Tile, GridError> {
+    pub fn get_tile_at(&self, x: usize, y: usize) -> Result<Tile, GridError> {
         self.ensure_validity_x_y(x, y)?;
-        Ok(&self.tiles[y * self.size.x() + x])
+        Ok(self.tiles[y * self.size.x() + x])
     }
 
     pub fn get_tile_at_mut(&mut self, x: usize, y: usize) -> Result<&mut Tile, GridError> {

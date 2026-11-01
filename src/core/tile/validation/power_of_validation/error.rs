@@ -1,6 +1,12 @@
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct NumberError {
-    pub number: f64,
+    pub(super) number: f64,
+}
+
+impl NumberError {
+    pub fn number(&self) -> f64 {
+        self.number
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -13,6 +19,7 @@ pub enum BaseError {
 pub enum Error {
     NumberError(NumberError),
     BaseError(BaseError),
+    NotPowerOf { number: f64, base: f64 },
 }
 
 impl From<NumberError> for Error {

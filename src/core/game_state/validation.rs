@@ -16,5 +16,5 @@ pub fn validate_changeability_status(status: GameStatus) -> Result<(), Error> {
 }
 
 pub fn validate_changeability_moves(moves: Moves) -> Result<(), Error> {
-    is_changeable_moves(moves).ok_or(Error::UnchangeableMoves(moves.clone()))
+    is_changeable_moves(moves).ok_or(Error::UnchangeableMoves(moves))
 }

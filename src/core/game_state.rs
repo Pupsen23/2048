@@ -25,12 +25,12 @@ impl GameState {
     }
 
     pub fn status_mut(&mut self) -> Result<&mut GameStatus, GameStateError> {
-        self.ensure_changeability()?;
+        validate_changeability_status(self.status)?;
         Ok(&mut self.status)
     }
 
     pub fn moves_mut(&mut self) -> Result<&mut Moves, GameStateError> {
-        self.ensure_changeability()?;
+        validate_changeability_moves(self.moves)?;
         Ok(&mut self.moves)
     }
 
@@ -43,11 +43,5 @@ impl GameState {
 
     pub fn with(status: GameStatus, moves: Moves) -> Self {
         Self { status, moves }
-    }
-
-    fn ensure_changeability(&self) -> Result<(), GameStateError> {
-        validate_changeability_status(self.status)?;
-        validate_changeability_moves(self.moves)?;
-        Ok(())
     }
 }

@@ -1,13 +1,9 @@
+pub mod error;
 pub mod rules;
 pub mod validation;
 
+pub use error::Error as SizeError;
 use validation::*;
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum SizeError {
-    InvalidX(usize),
-    InvalidY(usize),
-}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Size {
@@ -28,13 +24,13 @@ impl Size {
     }
 
     pub fn set_x(&mut self, x: usize) -> Result<(), SizeError> {
-        is_valid_x(x).ok_or(SizeError::InvalidX(x))?;
+        validate_x(x)?;
         self.x = x;
         Ok(())
     }
 
     pub fn set_y(&mut self, y: usize) -> Result<(), SizeError> {
-        is_valid_y(y).ok_or(SizeError::InvalidY(y))?;
+        validate_y(y)?;
         self.y = y;
         Ok(())
     }
@@ -47,8 +43,8 @@ impl Size {
     }
 
     pub fn with(x: usize, y: usize) -> Result<Self, SizeError> {
-        is_valid_x(x).ok_or(SizeError::InvalidX(x))?;
-        is_valid_y(y).ok_or(SizeError::InvalidY(y))?;
+        validate_x(x)?;
+        validate_y(y)?;
         Ok(Self { x, y })
     }
 }

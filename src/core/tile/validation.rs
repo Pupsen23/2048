@@ -5,22 +5,20 @@ use super::rules::*;
 use in_range_validation::*;
 use power_of_validation::*;
 
-pub fn validate_power_of_base(value: Option<u32>) -> Result<Option<bool>, PowerOfError> {
+pub fn validate_power_of_base(value: Option<u32>) -> Result<(), PowerOfError> {
     let value: u32 = match value {
-        None => return Ok(None),
+        None => return Ok(()),
         Some(some) => some,
     };
 
-    Ok(Some(validate_power_of_u32(value, POWER_BASE)?))
+    validate_power_of_u32(value, POWER_BASE)
 }
 
-pub fn validate_in_range_min_max(value: Option<u32>) -> Result<Option<bool>, InRangeError> {
+pub fn validate_in_range_min_max(value: Option<u32>) -> Result<(), InRangeError> {
     let value: u32 = match value {
-        None => return Ok(None),
+        None => return Ok(()),
         Some(some) => some,
     };
 
-    Ok(Some(validate_in_range_include(
-        value, MIN_VALUE, MAX_VALUE,
-    )?))
+    validate_in_range_include(value, MIN_VALUE, MAX_VALUE)
 }
