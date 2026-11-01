@@ -4,9 +4,10 @@ pub mod validation;
 
 use super::Tile;
 pub use error::Error as GridError;
-pub use size::Size as GridSize;
+pub use size::{Size as GridSize, SizeError as GridSizeError};
 use validation::validate_x_y;
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Grid {
     size: GridSize,
     tiles: Vec<Tile>,

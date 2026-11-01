@@ -5,7 +5,7 @@ pub mod status;
 pub mod validation;
 
 pub use error::Error as GameStateError;
-pub use moves::Moves as GameStateMoves;
+pub use moves::{Moves as GameStateMoves, MovesError as GameStateMovesError};
 pub use status::Status as GameStateStatus;
 use validation::{validate_changeability_moves, validate_changeability_status};
 
