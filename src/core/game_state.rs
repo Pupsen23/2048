@@ -1,47 +1,51 @@
 pub mod error;
-pub mod game_status;
 pub mod moves;
 pub mod rules;
+pub mod status;
 pub mod validation;
 
 pub use error::Error as GameStateError;
-use game_status::GameStatus;
-use moves::Moves;
-use validation::*;
+pub use moves::Moves as GameStateMoves;
+pub use status::Status as GameStateStatus;
+use validation::{validate_changeability_moves, validate_changeability_status};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GameState {
-    status: GameStatus,
-    moves: Moves,
+    status: GameStateStatus,
+    moves: GameStateMoves,
 }
 
 impl GameState {
-    pub fn status(&self) -> GameStatus {
+    pub const DEFAULT_STATUS: GameStateStatus = GameStateStatus::InProgress;
+
+    pub fn status(&self) -> GameStateStatus {
         self.status
     }
 
-    pub fn moves(&self) -> Moves {
+    pub fn moves(&self) -> GameStateMoves {
         self.moves
     }
 
-    pub fn status_mut(&mut self) -> Result<&mut GameStatus, GameStateError> {
+    pub fn status_mut(&mut self) -> Result<&mut GameStateStatus, GameStateError> {
         validate_changeability_status(self.status)?;
         Ok(&mut self.status)
     }
 
-    pub fn moves_mut(&mut self) -> Result<&mut Moves, GameStateError> {
+    pub fn moves_mut(&mut self) -> Result<&mut GameStateMoves, GameStateError> {
         validate_changeability_moves(self.moves)?;
         Ok(&mut self.moves)
     }
 
-    pub fn new() -> Self {
-        Self {
-            status: GameStatus::default(),
-            moves: Moves::new(),
-        }
-    }
-
-    pub fn with(status: GameStatus, moves: Moves) -> Self {
+    pub fn new(status: GameStateStatus, moves: GameStateMoves) -> Self {
         Self { status, moves }
+    }
+}
+
+impl Default for GameState {
+    fn default() -> Self {
+        Self {
+            status: Self::DEFAULT_STATUS,
+            moves: GameStateMoves::default(),
+        }
     }
 }

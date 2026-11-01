@@ -1,8 +1,8 @@
-use super::game_status::GameStatus;
-use super::moves::Moves;
+use super::GameStateMoves;
+use super::GameStateStatus;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {
-    UnchangeableStatus(GameStatus),
-    UnchangeableMoves(Moves),
+    UnchangeableStatus(GameStateStatus),
+    UnchangeableMoves(GameStateMoves),
 }

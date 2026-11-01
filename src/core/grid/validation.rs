@@ -1,9 +1,18 @@
-use super::size::Size;
+use super::error::Error;
+use super::GridSize;
 
-pub fn is_valid_x(x: usize, size: &Size) -> bool {
-    x < size.x()
-}
-
-pub fn is_valid_y(y: usize, size: &Size) -> bool {
-    y < size.y()
+pub fn validate_x_y(x: usize, y: usize, size: GridSize) -> Result<(), Error> {
+    if x >= size.x() {
+        Err(Error::InvalidX {
+            x,
+            max: size.x() - 1,
+        })
+    } else if y >= size.y() {
+        Err(Error::InvalidY {
+            y,
+            max: size.y() - 1,
+        })
+    } else {
+        Ok(())
+    }
 }

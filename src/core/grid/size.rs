@@ -1,11 +1,11 @@
 pub mod error;
-pub mod rules;
+pub mod rule;
 pub mod validation;
 
 pub use error::Error as SizeError;
-use validation::*;
+use validation::{validate_x, validate_y};
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Size {
     x: usize,
     y: usize,
@@ -35,16 +35,18 @@ impl Size {
         Ok(())
     }
 
-    pub fn new() -> Self {
+    pub fn new(x: usize, y: usize) -> Result<Self, SizeError> {
+        validate_x(x)?;
+        validate_y(y)?;
+        Ok(Self { x, y })
+    }
+}
+
+impl Default for Size {
+    fn default() -> Self {
         Self {
             x: Self::DEFAULT_X,
             y: Self::DEFAULT_Y,
         }
-    }
-
-    pub fn with(x: usize, y: usize) -> Result<Self, SizeError> {
-        validate_x(x)?;
-        validate_y(y)?;
-        Ok(Self { x, y })
     }
 }

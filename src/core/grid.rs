@@ -3,50 +3,45 @@ pub mod size;
 pub mod validation;
 
 use super::Tile;
-use error::Error as GridError;
-use size::Size;
-use validation::*;
+pub use error::Error as GridError;
+pub use size::Size as GridSize;
+use validation::validate_x_y;
 
-#[derive(Debug, Clone, PartialEq)]
 pub struct Grid {
-    size: Size,
+    size: GridSize,
     tiles: Vec<Tile>,
 }
 
 impl Grid {
-    pub fn size(&self) -> Size {
+    pub fn size(&self) -> GridSize {
         self.size
     }
 
-    pub fn get_tile_at(&self, x: usize, y: usize) -> Result<Tile, GridError> {
-        self.ensure_validity_x_y(x, y)?;
+    pub fn get_tile(&self, x: usize, y: usize) -> Result<Tile, GridError> {
+        validate_x_y(x, y, self.size)?;
         Ok(self.tiles[y * self.size.x() + x])
     }
 
-    pub fn get_tile_at_mut(&mut self, x: usize, y: usize) -> Result<&mut Tile, GridError> {
-        self.ensure_validity_x_y(x, y)?;
+    pub fn get_tile_mut(&mut self, x: usize, y: usize) -> Result<&mut Tile, GridError> {
+        validate_x_y(x, y, self.size)?;
         Ok(&mut self.tiles[y * self.size.x() + x])
     }
 
-    pub fn new() -> Self {
-        let size: Size = Size::new();
+    pub fn new(size: GridSize) -> Self {
+        Self {
+            size,
+            tiles: vec![Tile::default(); size.x() * size.y()],
+        }
+    }
+}
+
+impl Default for Grid {
+    fn default() -> Self {
+        let size: GridSize = GridSize::default();
 
         Self {
             size,
-            tiles: vec![Tile::new(); size.x() * size.y()],
+            tiles: vec![Tile::default(); size.x() * size.y()],
         }
-    }
-
-    pub fn with_size(size: Size) -> Self {
-        Self {
-            size,
-            tiles: vec![Tile::new(); size.x() * size.y()],
-        }
-    }
-
-    fn ensure_validity_x_y(&self, x: usize, y: usize) -> Result<(), GridError> {
-        is_valid_x(x, &self.size).ok_or(GridError::InvalidX(x))?;
-        is_valid_y(y, &self.size).ok_or(GridError::InvalidY(y))?;
-        Ok(())
     }
 }

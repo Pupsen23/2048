@@ -1,20 +1,20 @@
 use super::error::Error;
-use super::game_status::GameStatus;
-use super::moves::Moves;
 use super::rules::CHANGEABLE_STATUS;
+use super::GameStateMoves;
+use super::GameStateStatus;
 
-fn is_changeable_status(status: GameStatus) -> bool {
-    status == CHANGEABLE_STATUS
+pub fn validate_changeability_status(status: GameStateStatus) -> Result<(), Error> {
+    if status != CHANGEABLE_STATUS {
+        Err(Error::UnchangeableStatus(status))
+    } else {
+        Ok(())
+    }
 }
 
-fn is_changeable_moves(moves: Moves) -> bool {
-    moves.count() < moves.limit()
-}
-
-pub fn validate_changeability_status(status: GameStatus) -> Result<(), Error> {
-    is_changeable_status(status).ok_or(Error::UnchangeableStatus(status))
-}
-
-pub fn validate_changeability_moves(moves: Moves) -> Result<(), Error> {
-    is_changeable_moves(moves).ok_or(Error::UnchangeableMoves(moves))
+pub fn validate_changeability_moves(moves: GameStateMoves) -> Result<(), Error> {
+    if moves.count() == moves.limit() {
+        Err(Error::UnchangeableMoves(moves))
+    } else {
+        Ok(())
+    }
 }

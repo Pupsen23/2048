@@ -1,5 +1,5 @@
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {
-    InvalidX(usize),
-    InvalidY(usize),
+    InvalidX { x: usize, min: usize },
+    InvalidY { y: usize, min: usize },
 }

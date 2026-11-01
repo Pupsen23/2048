@@ -1,3 +1,3 @@
-use super::game_status::GameStatus;
+use super::GameStateStatus;
 
-pub const CHANGEABLE_STATUS: GameStatus = GameStatus::InProgress;
+pub const CHANGEABLE_STATUS: GameStateStatus = GameStateStatus::InProgress;

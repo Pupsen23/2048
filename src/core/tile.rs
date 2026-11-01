@@ -1,11 +1,11 @@
 pub mod error;
-pub mod rules;
+pub mod rule;
 pub mod validation;
 
 pub use error::Error as TileError;
-use validation::*;
+use validation::validate_value;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Tile {
     value: Option<u32>,
 }
@@ -18,25 +18,21 @@ impl Tile {
     }
 
     pub fn set_value(&mut self, value: Option<u32>) -> Result<(), TileError> {
-        Self::ensure_validity(value)?;
+        validate_value(value)?;
         self.value = value;
         Ok(())
     }
 
-    pub fn new() -> Self {
+    pub fn new(value: Option<u32>) -> Result<Self, TileError> {
+        validate_value(value)?;
+        Ok(Self { value })
+    }
+}
+
+impl Default for Tile {
+    fn default() -> Self {
         Self {
             value: Self::DEFAULT_VALUE,
         }
-    }
-
-    pub fn with(value: Option<u32>) -> Result<Self, TileError> {
-        Self::ensure_validity(value)?;
-        Ok(Self { value })
-    }
-
-    fn ensure_validity(value: Option<u32>) -> Result<(), TileError> {
-        validate_in_range_min_max(value)?;
-        validate_power_of_base(value)?;
-        Ok(())
     }
 }

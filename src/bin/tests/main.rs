@@ -1,6 +1,7 @@
 mod tile;
-mod game_state;
+mod grid;
 
 pub fn main() {
     tile::test();
+    grid::test();
 }

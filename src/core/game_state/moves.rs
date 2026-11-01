@@ -3,9 +3,9 @@ pub mod rules;
 pub mod validation;
 
 pub use error::Error as MovesError;
-use validation::*;
+use validation::{validate_count, validate_limit};
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Moves {
     limit: u32,
     count: u32,
@@ -29,16 +29,18 @@ impl Moves {
         Ok(())
     }
 
-    pub fn new() -> Self {
+    pub fn new(limit: u32, count: u32) -> Result<Self, MovesError> {
+        validate_limit(limit)?;
+        validate_count(count, limit)?;
+        Ok(Self { limit, count })
+    }
+}
+
+impl Default for Moves {
+    fn default() -> Self {
         Self {
             limit: Self::DEFAULT_LIMIT,
             count: Self::DEFAULT_COUNT,
         }
-    }
-
-    pub fn with(count: u32, limit: u32) -> Result<Self, MovesError> {
-        validate_limit(limit)?;
-        validate_count(count, limit)?;
-        Ok(Self { limit, count })
     }
 }
