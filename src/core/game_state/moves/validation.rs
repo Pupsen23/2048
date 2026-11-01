@@ -1,5 +1,5 @@
 use super::error::Error;
-use super::rules::MIN_LIMIT;
+use super::rule::MIN_LIMIT;
 
 pub fn validate_limit(limit: u32) -> Result<(), Error> {
     if limit < MIN_LIMIT {

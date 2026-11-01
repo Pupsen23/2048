@@ -1,6 +1,6 @@
 pub mod error;
 pub mod moves;
-pub mod rules;
+pub mod rule;
 pub mod status;
 pub mod validation;
 

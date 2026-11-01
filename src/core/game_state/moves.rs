@@ -1,5 +1,5 @@
 pub mod error;
-pub mod rules;
+pub mod rule;
 pub mod validation;
 
 pub use error::Error as MovesError;

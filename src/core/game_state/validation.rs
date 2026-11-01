@@ -1,5 +1,5 @@
 use super::error::Error;
-use super::rules::CHANGEABLE_STATUS;
+use super::rule::CHANGEABLE_STATUS;
 use super::GameStateMoves;
 use super::GameStateStatus;
 
