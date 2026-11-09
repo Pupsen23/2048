@@ -32,7 +32,7 @@ use twenty_forty_eight::core::engine::fill_grid;
 pub fn main() {
      let mut grid: Grid = Grid::default();
      let mut tile_generator: TileGenerator = TileGenerator::default();
-     let tile = match Tile::new(Some(2)) {
+     let tile = match Tile::new(Some(2), 32) {
          Ok(ok) => ok,
          Err(err) => panic!("{err:#?}"),  
      };
